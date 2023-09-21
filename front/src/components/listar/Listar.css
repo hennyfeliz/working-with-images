@@ -1,4 +1,6 @@
 .img-list {
+  max-height: 700px;
+  overflow: auto;
   display: flex;
   flex-wrap: wrap;
   margin: 20px;
@@ -7,6 +9,7 @@
 
 .img-container {
   background-color: #dfdfdf;
+  position: relative;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -34,3 +37,20 @@
 .refresh-button:hover {
   background-color: #474747;
 }
+
+.trans-icon {
+  cursor: pointer;
+  position: absolute;
+  width: 34px;
+  top: 20px;
+  right: 20px;
+  background-color: #c7c7c7;
+  transition: background-color 0.3s;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.trans-icon:hover {
+  background-color: #ca3b3b;
+}
+

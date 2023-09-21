@@ -1,88 +1,68 @@
 import { useState } from 'react'
 import './Listar.css'
-import { useEffect } from 'react';
 import imgIcon from '../../assets/icons/image.svg'
+import trash from '../../assets/icons/trash.svg'
 
 
 const Listar = () => {
 
-  const [imageBlob, setImageBlob] = useState(null);
-  const [imageURL, setImageURL] = useState('');
-
   const [images, setImages] = useState([]);
 
   const searchImages = () => {
-    const url = "http://localhost:8080/imgdata";
+    const url = 'http://localhost:8080/';
+
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setImages(data);
+      })
+      .catch(error => {
+        console.error('Error al intentar obtener las imágenes:', error);
+        throw error;
+      });
+  }
+
+  const deteleImage = (id) => {
+    console.log(id)
+    const url = `http://localhost:8080/${id}`;
 
     return fetch(url, {
-      method: "GET",
-      header: "Content-Type: application/json",
+      method: 'DELETE'
     })
-      .then((response) => {
-        return response.blob();
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        setImages((prevImages) => prevImages.filter((image) => image.id !== id));
       })
-      .then((blobData) => {
-        // Convierte el blob a una URL de imagen en base64
-        const reader = new FileReader();
-        // console.log(blobData);
-        reader.onload = () => {
-          console.log('salida por consola datos de la imagen: ', blobData);
-          setImageBlob(blobData);
-          setImages(blobData);
-          setImageURL(reader.result);
-        };
-        reader.readAsDataURL(blobData);
-      })
-      .catch((error) => {
-        console.error("Error al intentar obtener las imagenes:", error);
+      .catch(error => {
+        console.error('Error al intentar eliminar la imágen:', error);
         throw error;
       });
   }
 
   return (
-
     <>
       <div className='img-list'>
-        {imageBlob ? (
-          images.map((item, index) => {
-            return (
-              <div className="img-container" key={index}>
-                <img src={item.imageURL} alt="Imagen" className="img" />
-              </div>
-            )
-          })
-        ) : (
-          // images.map((item, index) => {
-          //   return (
+        {images.length === 0 ? (
           <div className="img-container">
             <img src={imgIcon} alt="default-img" className="img" />
           </div>
-          //   )
-          // })
+        ) : (
+          images.map((item, index) => {
+            return (
+              <div className="img-container" key={index}>
+                <img src={trash} alt='trash-icon' className='trans-icon' onClick={() => deteleImage(item.id)} />
+                <img src={`data:image/jpeg;base64,${item.imgdata}`} alt={item.name} className="img" />
+              </div>
+            );
+          })
         )}
-      </div >
+      </div>
       <button className='refresh-button' onClick={searchImages}>
         Refrescar
       </button>
     </>
-    // <>
-    //   <div className='img-list'>
-    //     {
-    //       images.map((item, index) => {
-    //         return (
-    //           <div className="img-container" key={index}>
-    //             <img
-    //               src={imgIcon}
-    //               alt="default-img"
-    //               className="img"
-    //             />
-    //           </div>
-    //         )
-    //       })
-    //     }
-    //   </div>
-    //   <button className='refresh-button' onClick={searchImages}>Refrescar</button>
-    // </>
   )
 }
 
