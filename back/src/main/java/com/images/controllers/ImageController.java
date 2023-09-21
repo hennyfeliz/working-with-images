@@ -35,6 +35,21 @@ public class ImageController {
         imageService.createImage(imagen);
     }
 
+    @PostMapping("/many")
+    public ResponseEntity<String> uploadAllImages(@RequestParam("archivo") List<MultipartFile> archivos) throws IOException {
+        archivos.forEach(archivo -> {
+            Image imagen = new Image();
+            imagen.setName(archivo.getOriginalFilename());
+            try {
+                imagen.setImgdata(archivo.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            imageService.createImage(imagen);
+        });
+        return new ResponseEntity<>("Imagenes cargadas correctamente!", HttpStatus.CREATED);
+    }
+
     @GetMapping("/byid/{id}")
     public ResponseEntity<byte[]> obtenerImage(@PathVariable Long id) {
         Optional<Image> imagenOptional = imageService.getImageById(id);
@@ -68,5 +83,14 @@ public class ImageController {
     @GetMapping
     public ResponseEntity<List<Image>> getAllImages(){
         return new ResponseEntity<>(imageService.getAllImages(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteImage(@PathVariable Long id){
+        logger.info("ID del parametro: " + id);
+        if(imageService.deleteImage(id)){
+            return new ResponseEntity<>("Deleted successfully.", HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.notFound().build();
     }
 }
