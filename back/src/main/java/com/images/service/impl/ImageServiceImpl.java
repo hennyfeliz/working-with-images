@@ -42,6 +42,10 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public boolean deleteImage(Long id) {
+        if(imageRepository.existsById(id)){
+            imageRepository.deleteById(id);
+            return true;
+        }
         return false;
     }
 }
