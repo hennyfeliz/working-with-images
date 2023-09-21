@@ -1,0 +1,29 @@
+.subir {
+  display: flex;
+  height: 130px;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  border-radius: 4px;
+  padding: 40px;
+  background-color: #cccccc;
+}
+
+.subir > * {
+  margin: 10px;
+}
+
+.subir > button {
+  padding: 4px 40px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background-color: #050505;
+  color: white;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.subir > button:hover {
+  background-color: #474747;
+}
