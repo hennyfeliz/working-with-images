@@ -10,3 +10,25 @@
   height: 100vh;
 }
 
+.up-buttons {
+  display: flex;
+}
+
+.up-buttons > * {
+  margin: 0 10px;
+}
+
+.up-buttons > a > button {
+  padding: 4px 40px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background-color: #050505;
+  color: white;
+  cursor: pointer;
+}
+
+.up-buttons > a > button:hover {
+  background-color: #474747;
+}
+
